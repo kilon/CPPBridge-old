@@ -6,7 +6,7 @@ retrieveSharedValue
 instance := CPPBridge new.
 fdNumber := CPPBridge openFile: '/Users/kilon/git/Pharo/Atlas/mmapped.bin' flags: (O_RDWR) .
 lseek := CPPBridge lSeek_fd: fdNumber range:3000  value:0.
-mmapPointer := CPPBridge  mmap_adress: 0 fileSize:4000  flag1: PROT_READ flag2: PROT_WRITE fd: fdNumber  offset: 0  .
+mmapPointer := CPPBridge  mmap_adress: 0 fileSize:4000  flag1: (PROT_READ | PROT_WRITE )flag2: MAP_SHARED  fd: fdNumber  offset: 0  .
 struct := CPPStruct pointTo: (mmapPointer getHandle ).
 
 
