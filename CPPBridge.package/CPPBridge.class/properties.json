@@ -1,0 +1,26 @@
+{
+	"commentStamp" : "kilonAlios 11/8/2016 20:55",
+	"super" : "Object",
+	"category" : "CPPBridge",
+	"classinstvars" : [ ],
+	"pools" : [ ],
+	"classvars" : [
+		"MAP_SHARED",
+		"O_CREAT",
+		"O_RDWR",
+		"O_TRUNC",
+		"PROT_READ",
+		"PROT_WRITE"
+	],
+	"instvars" : [
+		"O_RDWR",
+		"O_CREAT",
+		"O_TRUNC",
+		"fd",
+		"PROT_READ",
+		"PROT_WRITE",
+		"MAP_SHARED"
+	],
+	"name" : "CPPBridge",
+	"type" : "normal"
+}
