@@ -12,6 +12,10 @@ In a few hours it should be available from Package Browser, if not you can alway
 
 https://github.com/kilon/CPPBridge
 
+# Documentation
+
+CPPBridge class has a comment with all the details, each method at class side is commented , there is also an example method . C++ files required for the example files are included with the repo, you have just to compile them and execute Atlas-server.
+
 # Why bother making such a library ? 
 
 In my saga to find a way to use Pharo as a scripting language for Unreal Game Engine, I had two options
