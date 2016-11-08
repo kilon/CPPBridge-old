@@ -4,7 +4,11 @@ The purpose is to allow Pharo to write and read from an area of memory that it c
 
 see each function comment  at the class side for details.
 
-Example Source Code for the C++ file 
+Example Source Code for the C++ file  provided bellow . For you convenience the source file is provided with this repo in file Atlas-server.cpp
+
+atlas-client.cpp is just a C++ version of class side retrieveSharedValue for testing purposes
+
+printflags.cpp as you may imagine is the source for an application that print flags that are usd by this library and also works similar as atlas-client.cpp
 ----------------------------------------------
 
 #include <stdio.h>
