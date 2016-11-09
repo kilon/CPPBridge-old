@@ -14,7 +14,7 @@
 
 
 typedef struct {
-  char data[3000];
+  char data[3000]; // no need to take the entire space of the shared memory
   int count;
 } state_data;
 
@@ -23,8 +23,7 @@ int main(int argc, char *argv[])
     int i;
     int fd;
     int result;
-    char map[100];
-    char* map_address; /* mmapped array of int's */
+
     std::string reply;
 
     /* Open a file for writing.
@@ -70,13 +69,13 @@ int main(int argc, char *argv[])
      */
     std::cout<<"call mmap\n";
     state_data* data =(state_data*) mmap(0, FILESIZE, PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
-    if (map == MAP_FAILED) {
+    if (data == MAP_FAILED) {
 	close(fd);
 	perror("Error mmapping the file");
 	exit(EXIT_FAILURE);
     }
 
-    /* Now write int's to the file as if it were memory (an array of ints).
+    /* Now write write the string and the size of the string to the memory using the stuct. The file will be saved automatically by the OS.
      */
     while(reply !="n")
     {
@@ -85,21 +84,25 @@ int main(int argc, char *argv[])
       printf("Map pointer points to adress : %d \n",data);
       std::cout<<"type the value you want to share : \n";
       std::getline(std::cin,reply);
-      memset(data,0,sizeof(state_data));
-      //data->data = reply
+
+      memset(data,0,sizeof(state_data));  // zero out the memory
+
       std::cout<<"Looping assignment\n";
+
       for( data->count = 0 ; data->count < reply.length() ; ++data->count )
         {
           data->data[data->count] = reply[data->count];
 
         }
 
-      //*map[100] = reply.c_str();
-      //msync(map,FILESIZE,MS_SYNC | MS_INVALIDATE);
+
+      //msync(map,FILESIZE,MS_SYNC | MS_INVALIDATE); // you can use this if you want to save the file by yourself instead of expecting the OS to do it automatically. Makes sure that the shared data is always stored to the file. However this is option if storing the data to the file is not your prime concern.
+
       std::cout<<"Struct data : "<<data->data<<"\n";
       std::cout<<"Struct count : "<<data->count<<"\n";
       std::cout<<"The size of the Struct is : "<<sizeof(data)<<" bytes\n";
       std::cout<<"if you want to exit type n\n";
+
       std::getline(std::cin,reply);
     }
 

@@ -61,6 +61,8 @@ if (data == MAP_FAILED) {
 
     std::cout<<"\nPROT_READ | PROT_WRITE: " << std::to_string(PROT_READ | PROT_WRITE)<<"\n";
 
+    std::cout<<"\nMAP_FAILED : " << MAP_FAILED << "\n";
+
 if (munmap(data, FILESIZE) == -1) {
 	perror("Error un-mmapping the file");
 	/* Decide here whether to close(fd) and exit() or not. Depends... */
