@@ -9,7 +9,10 @@ Example Source Code for the C++ file  provided bellow . For you convenience the 
 atlas-client.cpp is just a C++ version of class side retrieveSharedValue for testing purposes
 
 printflags.cpp as you may imagine is the source for an application that print flags that are usd by this library and also works similar as atlas-client.cpp
+
 ----------------------------------------------
+
+```C++
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -128,3 +131,5 @@ int main(int argc, char *argv[])
     close(fd);
     return 0;
 }
+
+```
