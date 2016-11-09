@@ -20,7 +20,7 @@ Playground inside Pharo and do the following command
 
 ```Smalltalk
 Metacello new baseline:
-'ChronosManager' ; repository: 'github://kilon/ChronosManager:master';load.
+'CPPBridge' ; repository: 'github://kilon/CPPBridger:master';load.
 ```
 
 
