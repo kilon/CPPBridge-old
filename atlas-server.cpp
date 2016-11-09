@@ -1,16 +1,27 @@
-#include <stdio.h> include <stdlib.h> include <sys/types.h> include <sys/stat.h>
-#include <unistd.h> include <fcntl.h> include <sys/mman.h> include <string>
+#include <stdio.h>
+#include <stdlib.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <unistd.h>
+#include <fcntl.h>
+#include <sys/mman.h>
+#include <string>
 #include <iostream>
 
-#define FILEPATH "./mmapped.bin" define NUMINTS (1000) define FILESIZE (NUMINTS
-#* sizeof(int))
+#define FILEPATH "./mmapped.bin"
+#define NUMINTS (1000)
+#define FILESIZE (NUMINTS * sizeof(int))
 
 
 typedef struct
 { char data[3000]; // no need to take the entire space of the shared memory
   int count; } state_data;
 
-int main(int argc, char *argv[]) { int i; int fd; int result;
+int main(int argc, char *argv[])
+  {
+    int i;
+    int fd;
+    int result;
 
     std::string reply;
 
@@ -46,7 +57,7 @@ int main(int argc, char *argv[]) { int i; int fd; int result;
      * file.  / result = write(fd, "", 1); if (result != 1) { close(fd);
      * perror("Error writing last byte of the file"); exit(EXIT_FAILURE); }
 
-    /* Now the file is ready to be mmapped.  */
+     * Now the file is ready to be mmapped.  */
 
      std::cout<<"call mmap\n";
 
@@ -64,8 +75,9 @@ int main(int argc, char *argv[]) { int i; int fd; int result;
     while(reply!="n")
       {
 
-        std::cout<<"*************************\n"; printf("Map pointer points to
-address : %d \n",data); std::cout<<"type the value you want to share : \n";
+        std::cout<<"*************************\n";
+        printf("Map pointer points to address : %d \n",data);
+        std::cout<<"type the value you want to share : \n";
 
         std::getline(std::cin,reply);
 
@@ -80,11 +92,11 @@ address : %d \n",data); std::cout<<"type the value you want to share : \n";
           }
 
 
-      //msync(map,FILESIZE,MS_SYNC | MS_INVALIDATE); // you can use this if you
-      //want to save the file by yourself instead of expecting the OS to do it
-      //automatically. Makes sure that the shared data is always stored to the
-      //file. However this is option if storing the data to the file is not your
-      //prime concern.
+        /* msync(map,FILESIZE,MS_SYNC | MS_INVALIDATE);
+           you can use this if you want to save the file by yourself instead of
+           expecting the OS to do it automatically. Makes sure that the shared
+           data is always stored to the file. However this is option if storing
+           the data to the file is not your prime concern. */
 
       std::cout<<"Struct data : "<<data->data<<"\n";
       std::cout<<"Struct count : "<<data->count<<"\n";
