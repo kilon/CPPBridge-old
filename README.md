@@ -44,28 +44,30 @@ Bellow is the source of both methods together with their comments.
 ````Smalltalk
 retrieveSharedValueStep1
 <example>
-"This method is an example that retrieves a struct from a shared memory section, in order for this example
-to work you need you first copy paste the contents of the Example Souce Code of the C++ file in the comment
-section  (you can also find the cpp file in the same directory where the git repo has been downloaded) 
-of this class to a C++ source code file and compile it a run then replace the path of in this code of 
-CPPBridge openFile: with the correct path of the bin that the C++ files has created , in order for this to 
-work also you need to execute the C++ example first so it creates and file and share the memory.
+"This method is an example that retrieves a struct from a shared memory section, in order for
+this example to work you need you first copy paste the contents of the Example Souce Code of
+the C++ file in the comment section  (you can also find the cpp file in the same directory 
+where the git repo has been downloaded) of this class to a C++ source code file and compile 
+it a run then replace the path of in this code of CPPBridge openFile: with the correct path 
+of the bin that the C++ files has created , in order for this to work also you need to execute
+the C++ example first so it creates and file and share the memory.
 
-After executing this method you can execute retrieveSharedValueStep2 to unmap and close the memory mapped 
-file (keeps sharing the memory it just does not store it to the file)"
+After executing this method you can execute retrieveSharedValueStep2 to unmap and close the 
+memory mapped file (keeps sharing the memory it just does not store it to the file)"
 
 |instance fdNumber lseek mmapPointer data struct|
 
-"Let's create an instance just an an example but we wont use it because we can use either class method
-or intance methods. You would want to use instance method if you want to open multiple memory mapped
-files meaning multiple areas of shared memory. Class methods for using just one"
+"Let's create an instance just an an example but we wont use it because we can use either 
+class method or intance methods. You would want to use instance method if you want to open 
+multiple memory mapped files meaning multiple areas of shared memory. Class methods for 
+using just one"
 
 instance := CPPBridge new.
 
-"Warning !!! You must change the path to the file that is located in your hard drive. The file should
-be at the same location you built atlas-server.cpp which is responsible for creating the file. The 
-number returned is a number that OS uses to identify the image , flag O_RDWR is just a number that 
-states that we want to write and read the file"
+"Warning !!! You must change the path to the file that is located in your hard drive. 
+The file should be at the same location you built atlas-server.cpp which is responsible
+for creating the file. The number returned is a number that OS uses to identify the image 
+, flag O_RDWR is just a number that states that we want to write and read the file"
 
 fdNumber := CPPBridge openFile: '/Users/kilon/git/Pharo/Atlas/mmapped.bin' flags: (O_RDWR) . 
 
