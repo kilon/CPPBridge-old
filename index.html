@@ -122,10 +122,12 @@ instance <span class="pl-k">:=</span> <span class="pl-c1">CPPBridge</span> <span
 <span class="pl-c">O_RDWR is just a number that states that we want to write and read the</span>
 <span class="pl-c">file"</span>
 
-fdNumber <span class="pl-k">:=</span> <span class="pl-c1">CPPBridge</span> <span class="pl-c1">openFile:</span>
-<span class="pl-s">'/Users/kilon/git/Pharo/Atlas/mmapped.bin'</span> <span class="pl-c1">flags:</span> (<span class="pl-c1">O_RDWR</span>) .
+fdNumber <span class="pl-k">:=</span> <span class="pl-c1">CPPBridge</span> <span class="pl-c1">openFile:</span><span class="pl-s">'/Users/kilon/git/Pharo/Atlas/mmapped.bin'</span> 
+                     <span class="pl-c1">flags:</span> (<span class="pl-c1">O_RDWR</span>) .
 
-<span class="pl-c">"lseek is used to stretch the file to a new size"</span> lseek <span class="pl-k">:=</span> <span class="pl-c1">CPPBridge</span>
+<span class="pl-c">"lseek is used to stretch the file to a new size"</span> 
+
+lseek <span class="pl-k">:=</span> <span class="pl-c1">CPPBridge</span>
 <span class="pl-c1">lSeek_fd:</span> fdNumber <span class="pl-c1">range:</span><span class="pl-c1">3999</span> <span class="pl-c1">value:</span><span class="pl-c1">0</span>.
 
 <span class="pl-c">"this is the most importan method, this method maps the file to</span>
@@ -141,24 +143,30 @@ mmapPointer <span class="pl-k">:=</span> <span class="pl-c1">CPPBridge</span> <s
 
 <span class="pl-c">"This assigns the pointer to our Pharo structure so we can use it to</span>
 <span class="pl-c">get the contents of the C structure located in the shared memory"</span>
+
 struct <span class="pl-k">:=</span> <span class="pl-c1">CPPStruct</span> <span class="pl-c1">pointTo:</span> (mmapPointer getHandle ).
 
 <span class="pl-c">"data here serves as a convenience array its not necessary we use it</span>
 <span class="pl-c">just to collect information about the instance, the fd number of the</span>
 <span class="pl-c">file, the streched size of the file, the adress (point) where the file</span>
 <span class="pl-c">is mapped to in memory and structthat contains the values of the C</span>
-<span class="pl-c">struct that we received"</span> data <span class="pl-k">:=</span>{ instance.  fdNumber
-. lseek. mmapPointer .  struct}.  data inspect.
+<span class="pl-c">struct that we received"</span> 
+
+data <span class="pl-k">:=</span>{ instance.  fdNumber. lseek. mmapPointer .  struct}.  
+data inspect.
 
 <span class="pl-c">"Store data to the class so we can use it in the second method"</span>
-<span class="pl-c1">ExampleDATA</span> <span class="pl-k">:=</span> data.  <span class="pl-k">^</span>data
+
+<span class="pl-c1">ExampleDATA</span> <span class="pl-k">:=</span> data.  
+
+<span class="pl-k">^</span>data
 
 <span class="pl-c">" Its also possible to write to the shared memory , in this case we</span>
 <span class="pl-c">use once again the C struct which has the following members</span>
 <span class="pl-c">(variables) :</span>
 <span class="pl-c"></span>
-<span class="pl-c">1) data = char[3000] this is where we store the string 2) count = int</span>
-<span class="pl-c">this is where we store the size of the string</span>
+<span class="pl-c">1) data = char[3000] this is where we store the string </span>
+<span class="pl-c">2) count = int this is where we store the size of the string</span>
 <span class="pl-c"></span>
 <span class="pl-c">struct := {(mmapPointer getHandle copyFrom: 1 to:3000 )asString .</span>
 <span class="pl-c">            (mmapPointer getHandle integerAt: 3001 size:4 signed:</span>
@@ -167,25 +175,29 @@ struct <span class="pl-k">:=</span> <span class="pl-c1">CPPStruct</span> <span c
 <span class="pl-c">mmapPointer is the pointer that points to the first byte of the shared</span>
 <span class="pl-c">memory.</span>
 <span class="pl-c"></span>
-<span class="pl-c">getHandle gives us the memory adress that the pointer points to</span>
+<span class="pl-c">getHandle gives us the memory address that the pointer points to</span>
 <span class="pl-c"></span>
 <span class="pl-c">copyFrom:1 to:3000 copies byte from byte 0 (remember C counts from 0 ,</span>
 <span class="pl-c">Pharo counts from 1) to byte 3000 because the string we store is</span>
 <span class="pl-c">stored as a char array of 3000 elements, each element is a char, each</span>
-<span class="pl-c">char is 1 byte in leght and represents a single character of the</span>
+<span class="pl-c">char is 1 byte in legth and represents a single character of the</span>
 <span class="pl-c">string. This gets the value of the first struct member.</span>
 <span class="pl-c"></span>
 <span class="pl-c">on the other hand integerAt: 3001 size: 4 signed: false returns us the</span>
-<span class="pl-c">value count memeber of the C struct . its an integer in position 3001</span>
+<span class="pl-c">value count member of the C struct . its an integer in position 3001</span>
 <span class="pl-c">because our string is a char[3000] and the size is 4 bytes because its</span>
 <span class="pl-c">an C int, signed false because we use no negative values because it</span>
 <span class="pl-c">does not make sense for a string to have negative length. This gets</span>
-<span class="pl-c">the value of the second struct member"</span> ```
+<span class="pl-c">the value of the second struct member"</span> 
 
-```<span class="pl-k">Smalltalk</span> retrieveSharedValueStep2 <span class="pl-k">&lt;</span>example<span class="pl-k">&gt;</span> <span class="pl-c">"this one is to be</span>
-<span class="pl-c">triggered after retrieveSharedValueStep1 when we are finished</span>
-<span class="pl-c"> with the shared memory and we want to erase it and close the memory</span>
-<span class="pl-c"> mapped file</span>
+
+retrieveSharedValueStep2 
+<span class="pl-k">&lt;</span>example<span class="pl-k">&gt;</span> 
+
+<span class="pl-c">"</span>
+<span class="pl-c">this one is to be triggered after retrieveSharedValueStep1 when we are</span>
+<span class="pl-c">finished with the shared memory and we want to erase it and close the </span>
+<span class="pl-c">memory mapped file</span>
 <span class="pl-c"></span>
 <span class="pl-c">ExampleDATA here severs as convenience array for storing the return</span>
 <span class="pl-c">values from the call to C function.</span>
@@ -204,8 +216,8 @@ struct <span class="pl-k">:=</span> <span class="pl-c1">CPPStruct</span> <span c
 <span class="pl-c"></span>
 <span class="pl-c">ExampleDATA = { CPPBridgeinstance . fd . lseek . mmap . struct}"</span>
 
-<span class="pl-c">"first lets unmpa the file, basically this will disassociate the file</span>
-<span class="pl-c">with the memory area that is assigned to ,meaing the OS will no longer</span>
+<span class="pl-c">"first lets unmap the file, basically this will disassociate the file</span>
+<span class="pl-c">with the memory area that is assigned to ,meaning the OS will no longer</span>
 <span class="pl-c">store in that file automatically what we change in shared memory"</span>
 
 <span class="pl-c1">CPPBridge</span> <span class="pl-c1">munmap_data:</span> (<span class="pl-c1">ExampleDATA</span> <span class="pl-c1">at:</span> <span class="pl-c1">4</span>) <span class="pl-c1">filesize:</span> <span class="pl-c1">4000</span>.
@@ -213,7 +225,8 @@ struct <span class="pl-k">:=</span> <span class="pl-c1">CPPStruct</span> <span c
 <span class="pl-c">"And because we wont be using the file anymore lets close. Remember</span>
 <span class="pl-c">you still have access to the shared memmory. "</span>
 
-<span class="pl-c1">CPPBridge</span> <span class="pl-c1">closeFile:</span> (<span class="pl-c1">ExampleDATA</span> <span class="pl-c1">at:</span> <span class="pl-c1">2</span>).  </pre></div>
+<span class="pl-c1">CPPBridge</span> <span class="pl-c1">closeFile:</span> (<span class="pl-c1">ExampleDATA</span> <span class="pl-c1">at:</span> <span class="pl-c1">2</span>).  
+</pre></div>
 
 <hr>
 
