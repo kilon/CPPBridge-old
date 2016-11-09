@@ -4,18 +4,19 @@ https://youtu.be/pI4PR3XaX6Q
 
 # What is it ?
 
-CPPBridge is a library that allows Pharo to share memory with any C/C++ application. Opening the door not only to IPC
-and data sharing but also even complete control of C++ code from Pharo and vice versa.
+CPPBridge is a library that allows Pharo to share memory with any C/C++ application. Opening the door not
+only to IPC and data sharing but also even complete control of C++ code from Pharo and vice versa.
 
 # Documentation
 
-CPPBridge class has a comment with all the details, each method at class side is commented , there is also an example
-method . C++ files required for the example files are included with the repo, you have just to compile them and execute Atlas-server.
+CPPBridge class has a comment with all the details, each method at class side is commented , there is also 
+an example method . C++ files required for the example files are included with the repo, you have just to 
+compile them and execute Atlas-server.
 
 ## How to install ?
 
-In a few hours it should be available from Package Browser, if not you can always fetch it with Metacello from here 
-because it comes with a Baseline
+In a few hours it should be available from Package Browser, if not you can always fetch it with Metacello from
+here because it comes with a Baseline
 
 https://github.com/kilon/CPPBridge
 
