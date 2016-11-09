@@ -7,12 +7,14 @@
 		"lSeek:" : "kilonAlios 11/8/2016 20:19"
 	},
 	"class" : {
-		"mmap_adress:fileSize:flag1:flag2:fd:offset:" : "kilonAlios 11/8/2016 20:49",
-		"initialize" : "kilonAlios 11/8/2016 20:47",
-		"retrieveSharedValue" : "kilonAlios 11/8/2016 23:42",
-		"openFile:flags:" : "kilonAlios 11/8/2016 20:50",
-		"lSeek_fd:range:value:" : "kilonAlios 11/8/2016 20:48",
+		"mmap_adress:fileSize:flag1:flag2:fd:offset:" : "kilonAlios 11/9/2016 11:05",
+		"initialize" : "kilonAlios 11/9/2016 10:24",
+		"retrieveSharedValueStep2" : "kilonAlios 11/9/2016 11:10",
+		"munmap_data:filesize:" : "kilonAlios 11/9/2016 10:55",
+		"openFile:flags:" : "kilonAlios 11/9/2016 10:50",
+		"lSeek_fd:range:value:" : "kilonAlios 11/9/2016 10:52",
 		"closeFile:" : "kilonAlios 11/8/2016 20:50",
-		"ffiLibraryName" : "kilonAlios 11/8/2016 20:51"
+		"ffiLibraryName" : "kilonAlios 11/8/2016 20:51",
+		"retrieveSharedValueStep1" : "kilonAlios 11/9/2016 11:22"
 	}
 }
