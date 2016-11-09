@@ -14,16 +14,18 @@
 
 
 typedef struct
-{ char data[3000]; // no need to take the entire space of the shared memory
-  int count; } state_data;
+{
+  char data[3000]; // no need to take the entire space of the shared memory
+  int count;
+} state_data;
 
 int main(int argc, char *argv[])
   {
-    int i;
+
     int fd;
     int result;
 
-    std::string reply;
+    std::string reply ="";
 
     /* Open a file for writing.  * - Creating the file if it doesn't exist.  * -
     Truncating it to 0 size if it already exists. (not really needed)
@@ -54,10 +56,15 @@ int main(int argc, char *argv[])
      * Note: - The current position in the file is at the end of the stretched
      * file due to the call to lseek().  - An empty string is actually a single
      * '\0' character, so a zero-byte will be written at the last byte of the
-     * file.  / result = write(fd, "", 1); if (result != 1) { close(fd);
-     * perror("Error writing last byte of the file"); exit(EXIT_FAILURE); }
+     * file. */
+     result = write(fd, "", 1);
+     if (result != 1)
+       {
+         close(fd);
+         perror("Error writing last byte of the file");
+         exit(EXIT_FAILURE); }
 
-     * Now the file is ready to be mmapped.  */
+     /*Now the file is ready to be mmapped.  */
 
      std::cout<<"call mmap\n";
 
@@ -98,12 +105,14 @@ int main(int argc, char *argv[])
            data is always stored to the file. However this is option if storing
            the data to the file is not your prime concern. */
 
-      std::cout<<"Struct data : "<<data->data<<"\n";
-      std::cout<<"Struct count : "<<data->count<<"\n";
-      std::cout<<"The size of the Struct is :"<<sizeof(data)<<" bytes\n";
-      std::cout<<"if you want to exit type n\n";
+        std::cout<<"Struct data : "<<data->data<<"\n";
+        std::cout<<"Struct count : "<<data->count<<"\n";
+        std::cout<<"The size of the Struct is :"<<sizeof(state_data)<<" bytes\n";
+        std::cout<<"File mode : "<<(mode_t)0600<<"\n";
+        std::cout<<"if you want to exit type n\n";
 
-      std::getline(std::cin,reply); }
+        std::getline(std::cin,reply);
+      }
 
     /* Don't forget to free the mmapped memory */
     if (munmap(data, FILESIZE) == -1)

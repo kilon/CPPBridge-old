@@ -1,4 +1,4 @@
-as yet unclassified
+file operations
 openFile: aString flags: flags
 "opens a file to be used for mapping the shared memory"
 |return|

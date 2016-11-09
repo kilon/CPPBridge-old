@@ -1,4 +1,4 @@
-as yet unclassified
+file operations
 lSeek_fd: anFd range: aSizeInBytes value: anInteger
 "this function will fill a portion range of a file fd with a value "
 |return|

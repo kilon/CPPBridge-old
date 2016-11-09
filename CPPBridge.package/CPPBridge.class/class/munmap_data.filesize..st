@@ -1,4 +1,4 @@
-as yet unclassified
+memory operations
 munmap_data: mmapPointer filesize: anInteger
 "Unmap fie from memory"
 |return|

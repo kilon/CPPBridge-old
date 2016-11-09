@@ -1,4 +1,4 @@
-as yet unclassified
+examples
 retrieveSharedValueStep2
 <example>
 "this one is to be triggered after retrieveSharedValueStep1 when we are finished

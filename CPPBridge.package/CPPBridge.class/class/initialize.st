@@ -7,5 +7,5 @@ MAP_SHARED := 1.  "Allow me to share the file mapped memory"
 O_RDWR := 2.      "Allow me to read and write the file "
 O_CREAT := 512.   "Create the file if does not exist"
 O_TRUNC := 1024.
-
+FILEMODE:= 384.
 ExampleDATA :={0} "Data used by example methods"
