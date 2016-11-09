@@ -15,10 +15,14 @@ compile them and execute Atlas-server.
 
 ## How to install ?
 
-In a few hours it should be available from Package Browser, if not you can always fetch it with Metacello from
-here because it comes with a Baseline
+In a few hours it should be available from Package Browser, if you like to install it manually then open a 
+Playground inside Pharo and do the following command
 
-https://github.com/kilon/CPPBridge
+```Smalltalk
+Metacello new baseline:
+'ChronosManager' ; repository: 'github://kilon/ChronosManager:master';load.
+```
+
 
 ## How to use it ?
 You need to first build atlas-server.cpp which you can do with
