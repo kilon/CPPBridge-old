@@ -14,15 +14,7 @@
 		"PROT_READ",
 		"PROT_WRITE"
 	],
-	"instvars" : [
-		"O_RDWR",
-		"O_CREAT",
-		"O_TRUNC",
-		"fd",
-		"PROT_READ",
-		"PROT_WRITE",
-		"MAP_SHARED"
-	],
+	"instvars" : [ ],
 	"name" : "CPPBridge",
 	"type" : "normal"
 }

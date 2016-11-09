@@ -1,4 +1,4 @@
-as yet unclassified
+initialisation
 initialize
 " set here the default values for the flags used by open() and mmap"
 PROT_READ := 1.   "Allow me to read the file mapped memory"
