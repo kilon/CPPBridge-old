@@ -1,0 +1,290 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>CppBridge by kilon</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/github-dark.css">
+    <script src="javascripts/scale.fix.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header class="without-description">
+        <h1>CppBridge</h1>
+        <p></p>
+        <p class="view"><a href="https://github.com/kilon/CPPBridge">View the Project on GitHub <small>kilon/CPPBridge</small></a></p>
+        <ul>
+          <li><a href="https://github.com/kilon/CPPBridge/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/kilon/CPPBridge/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/kilon/CPPBridge">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <h1>
+<a id="cppbridge" class="anchor" href="#cppbridge" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>CPPBridge</h1>
+
+<p><a href="https://youtu.be/pI4PR3XaX6Q">https://youtu.be/pI4PR3XaX6Q</a></p>
+
+<hr>
+
+<h1>
+<a id="what-is-it-" class="anchor" href="#what-is-it-" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>What is it ?</h1>
+
+<p>CPPBridge is a library that allows Pharo to share memory with any C/C++ application. Opening the door not
+only to IPC and data sharing but also even complete control of C++ code from Pharo and vice versa.</p>
+
+<hr>
+
+<h1>
+<a id="documentation" class="anchor" href="#documentation" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Documentation</h1>
+
+<p>CPPBridge class has a comment with all the details, each method at class side is commented , there is also 
+an example method . C++ files required for the example files are included with the repo, you have just to 
+compile them and execute Atlas-server.</p>
+
+<hr>
+
+<h2>
+<a id="how-to-install-" class="anchor" href="#how-to-install-" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>How to install ?</h2>
+
+<p>In a few hours it should be available from Package Browser, if you like to install it manually then open a 
+Playground inside Pharo and do the following command</p>
+
+<div class="highlight highlight-source-smalltalk"><pre><span class="pl-c1">Metacello</span> <span class="pl-k">new</span> <span class="pl-c1">baseline:</span>
+<span class="pl-s">'CPPBridge'</span> ; <span class="pl-c1">repository:</span> <span class="pl-s">'github://kilon/CPPBridger:master'</span>;load.</pre></div>
+
+<hr>
+
+<h2>
+<a id="how-to-use-it-" class="anchor" href="#how-to-use-it-" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>How to use it ?</h2>
+
+<p>You need to first build atlas-server.cpp which you can do with</p>
+
+<pre><code>g++ atlas-server.cpp -o atlas-server
+</code></pre>
+
+<p>then execute it</p>
+
+<pre><code>./atlas-server
+</code></pre>
+
+<p>it will ask you to type a string, type whatever you like and press enter. Will provide information about the C
+struct which is used to store data into the shared memory. Basically this application is opening / creating a 
+file called "mmaped.bin" which  is just a simple binary file and maps it to the memory. That means that whatever
+is in the file is loaded to the memory. </p>
+
+<p>Then shares the memory with any other process who will memory map the same file. </p>
+
+<p>Then we start Pharo , install CPPBridge to it and go to CPPBridge class &gt;&gt; retrieveSharedValueStep1 , read 
+the comment and click the green triangle to execute so that you receive the C string you typed from Pharo 
+and then execute retrieveSharedValueStep2 to unmap and close the file</p>
+
+<p>Bellow is the source of both methods together with their comments.</p>
+
+<div class="highlight highlight-source-smalltalk"><pre>retrieveSharedValueStep1
+<span class="pl-k">&lt;</span>example<span class="pl-k">&gt;</span>
+<span class="pl-c">"</span>
+<span class="pl-c">This method is an example that retrieves a struct from a shared memory</span>
+<span class="pl-c">section, in order for this example to work you need you first copy</span>
+<span class="pl-c">paste the contents of the Example Souce Code of the C++ file in the</span>
+<span class="pl-c">comment section (you can also find the cpp file in the same directory</span>
+<span class="pl-c">where the git repo has been downloaded) of this class to a C++ source</span>
+<span class="pl-c">code file and compile it a run then replace the path of in this code</span>
+<span class="pl-c">of CPPBridge openFile: with the correct path of the bin that the C++</span>
+<span class="pl-c">files has created , in order for this to work also you need to execute</span>
+<span class="pl-c">the C++ example first so it creates and file and share the memory.</span>
+<span class="pl-c"></span>
+<span class="pl-c">After executing this method you can execute retrieveSharedValueStep2</span>
+<span class="pl-c">to unmap and close the memory mapped file (keeps sharing the memory it</span>
+<span class="pl-c">just does not store it to the file)"</span>
+
+|<span class="pl-c1">instance fdNumber lseek mmapPointer data struct</span>|
+
+<span class="pl-c">"Let's create an instance just an an example but we wont use it</span>
+<span class="pl-c">because we can use either class method or intance methods. You would</span>
+<span class="pl-c">want to use instance method if you want to open multiple memory mapped</span>
+<span class="pl-c">files meaning multiple areas of shared memory. Class methods for using</span>
+<span class="pl-c">just one"</span>
+
+instance <span class="pl-k">:=</span> <span class="pl-c1">CPPBridge</span> <span class="pl-k">new</span>.
+
+<span class="pl-c">"Warning !!! You must change the path to the file that is located in</span>
+<span class="pl-c">your hard drive.  The file should be at the same location you built</span>
+<span class="pl-c">atlas-server.cpp which is responsible for creating the file. The</span>
+<span class="pl-c">number returned is a number that OS uses to identify the image , flag</span>
+<span class="pl-c">O_RDWR is just a number that states that we want to write and read the</span>
+<span class="pl-c">file"</span>
+
+fdNumber <span class="pl-k">:=</span> <span class="pl-c1">CPPBridge</span> <span class="pl-c1">openFile:</span>
+<span class="pl-s">'/Users/kilon/git/Pharo/Atlas/mmapped.bin'</span> <span class="pl-c1">flags:</span> (<span class="pl-c1">O_RDWR</span>) .
+
+<span class="pl-c">"lseek is used to stretch the file to a new size"</span> lseek <span class="pl-k">:=</span> <span class="pl-c1">CPPBridge</span>
+<span class="pl-c1">lSeek_fd:</span> fdNumber <span class="pl-c1">range:</span><span class="pl-c1">3999</span> <span class="pl-c1">value:</span><span class="pl-c1">0</span>.
+
+<span class="pl-c">"this is the most importan method, this method maps the file to</span>
+<span class="pl-c">memmory , which means it loads its contents into memory and associates</span>
+<span class="pl-c">the memory with the file. PROT_READ means we want to write the memory</span>
+<span class="pl-c">, PROT_WRITE to write the memory and MAP_SHARED is the most importan</span>
+<span class="pl-c">because it defines the memory area as shared so we can access it from</span>
+<span class="pl-c">other application"</span>
+
+mmapPointer <span class="pl-k">:=</span> <span class="pl-c1">CPPBridge</span> <span class="pl-c1">mmap_adress:</span> <span class="pl-c1">0</span> <span class="pl-c1">fileSize:</span><span class="pl-c1">4000</span>
+                          <span class="pl-c1">flag1:</span> (<span class="pl-c1">PROT_READ</span> <span class="pl-k">|</span> <span class="pl-c1">PROT_WRITE</span> )<span class="pl-c1">flag2:</span>
+                          <span class="pl-c1">MAP_SHARED</span> <span class="pl-c1">fd:</span> fdNumber <span class="pl-c1">offset:</span> <span class="pl-c1">0</span> .
+
+<span class="pl-c">"This assigns the pointer to our Pharo structure so we can use it to</span>
+<span class="pl-c">get the contents of the C structure located in the shared memory"</span>
+struct <span class="pl-k">:=</span> <span class="pl-c1">CPPStruct</span> <span class="pl-c1">pointTo:</span> (mmapPointer getHandle ).
+
+<span class="pl-c">"data here serves as a convenience array its not necessary we use it</span>
+<span class="pl-c">just to collect information about the instance, the fd number of the</span>
+<span class="pl-c">file, the streched size of the file, the adress (point) where the file</span>
+<span class="pl-c">is mapped to in memory and structthat contains the values of the C</span>
+<span class="pl-c">struct that we received"</span> data <span class="pl-k">:=</span>{ instance.  fdNumber
+. lseek. mmapPointer .  struct}.  data inspect.
+
+<span class="pl-c">"Store data to the class so we can use it in the second method"</span>
+<span class="pl-c1">ExampleDATA</span> <span class="pl-k">:=</span> data.  <span class="pl-k">^</span>data
+
+<span class="pl-c">" Its also possible to write to the shared memory , in this case we</span>
+<span class="pl-c">use once again the C struct which has the following members</span>
+<span class="pl-c">(variables) :</span>
+<span class="pl-c"></span>
+<span class="pl-c">1) data = char[3000] this is where we store the string 2) count = int</span>
+<span class="pl-c">this is where we store the size of the string</span>
+<span class="pl-c"></span>
+<span class="pl-c">struct := {(mmapPointer getHandle copyFrom: 1 to:3000 )asString .</span>
+<span class="pl-c">            (mmapPointer getHandle integerAt: 3001 size:4 signed:</span>
+<span class="pl-c">            false)}.</span>
+<span class="pl-c"></span>
+<span class="pl-c">mmapPointer is the pointer that points to the first byte of the shared</span>
+<span class="pl-c">memory.</span>
+<span class="pl-c"></span>
+<span class="pl-c">getHandle gives us the memory adress that the pointer points to</span>
+<span class="pl-c"></span>
+<span class="pl-c">copyFrom:1 to:3000 copies byte from byte 0 (remember C counts from 0 ,</span>
+<span class="pl-c">Pharo counts from 1) to byte 3000 because the string we store is</span>
+<span class="pl-c">stored as a char array of 3000 elements, each element is a char, each</span>
+<span class="pl-c">char is 1 byte in leght and represents a single character of the</span>
+<span class="pl-c">string. This gets the value of the first struct member.</span>
+<span class="pl-c"></span>
+<span class="pl-c">on the other hand integerAt: 3001 size: 4 signed: false returns us the</span>
+<span class="pl-c">value count memeber of the C struct . its an integer in position 3001</span>
+<span class="pl-c">because our string is a char[3000] and the size is 4 bytes because its</span>
+<span class="pl-c">an C int, signed false because we use no negative values because it</span>
+<span class="pl-c">does not make sense for a string to have negative length. This gets</span>
+<span class="pl-c">the value of the second struct member"</span> ```
+
+```<span class="pl-k">Smalltalk</span> retrieveSharedValueStep2 <span class="pl-k">&lt;</span>example<span class="pl-k">&gt;</span> <span class="pl-c">"this one is to be</span>
+<span class="pl-c">triggered after retrieveSharedValueStep1 when we are finished</span>
+<span class="pl-c"> with the shared memory and we want to erase it and close the memory</span>
+<span class="pl-c"> mapped file</span>
+<span class="pl-c"></span>
+<span class="pl-c">ExampleDATA here severs as convenience array for storing the return</span>
+<span class="pl-c">values from the call to C function.</span>
+<span class="pl-c"></span>
+<span class="pl-c">fd -&gt; a number with which the OS identifies the memory mapped file</span>
+<span class="pl-c"></span>
+<span class="pl-c">lseek -&gt; a number that returns the size of the file after we stretched</span>
+<span class="pl-c">it to its finaly size</span>
+<span class="pl-c"></span>
+<span class="pl-c">mmap -&gt; this is the juice, the pointer that points to the first byte</span>
+<span class="pl-c">of the shared memory. The final byte is of the shared memory defined</span>
+<span class="pl-c">by the size of the file.</span>
+<span class="pl-c"></span>
+<span class="pl-c">struct -&gt; here we put the values we retrieved from the C struct which</span>
+<span class="pl-c">was the goal of the previous method</span>
+<span class="pl-c"></span>
+<span class="pl-c">ExampleDATA = { CPPBridgeinstance . fd . lseek . mmap . struct}"</span>
+
+<span class="pl-c">"first lets unmpa the file, basically this will disassociate the file</span>
+<span class="pl-c">with the memory area that is assigned to ,meaing the OS will no longer</span>
+<span class="pl-c">store in that file automatically what we change in shared memory"</span>
+
+<span class="pl-c1">CPPBridge</span> <span class="pl-c1">munmap_data:</span> (<span class="pl-c1">ExampleDATA</span> <span class="pl-c1">at:</span> <span class="pl-c1">4</span>) <span class="pl-c1">filesize:</span> <span class="pl-c1">4000</span>.
+
+<span class="pl-c">"And because we wont be using the file anymore lets close. Remember</span>
+<span class="pl-c">you still have access to the shared memmory. "</span>
+
+<span class="pl-c1">CPPBridge</span> <span class="pl-c1">closeFile:</span> (<span class="pl-c1">ExampleDATA</span> <span class="pl-c1">at:</span> <span class="pl-c1">2</span>).  </pre></div>
+
+<hr>
+
+<h1>
+<a id="why-bother-making-such-a-library-" class="anchor" href="#why-bother-making-such-a-library-" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Why bother making such a library ?</h1>
+
+<p>In my saga to find a way to use Pharo as a scripting language for Unreal Game Engine, I had two options</p>
+
+<ol>
+<li>Build Unreal as a Library and use Pharo UFFI to launch and control it</li>
+<li>Embed Pharo inside the Unreal Executable (this is what every other scripting language uses for controlling Unreal) </li>
+</ol>
+
+<p>Option a was a no go, because Unreal is huge , complex and uses its own custom made build tools, making a DLL for Pharo or an army of DLLs  out of the question</p>
+
+<p>Option b Embeding Pharo inside an executable is impossible and implementing it also insanely complex.Naturally my mind went first into sockets which is what I use to make Pharo able to use Python libraries. However sockets have proven too slow for the insanely fast loops of Unreal. </p>
+
+<hr>
+
+<h1>
+<a id="what-are-the-advantages-" class="anchor" href="#what-are-the-advantages-" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>What are the advantages ?</h1>
+
+<ul>
+<li><p>No need to move data around. Sharing memory means you don't have to move data around, you can use directly the shared memory</p></li>
+<li><p>Extend the Pharo image beyond Pharo. Shared memory is mapped into a file means that you can do with C++ what you can do with Pharo image, save the live state directly to a binary file. That means we no longer need to worry about sessions and reinitializing C/C++ data since memory mapped file acts as an extension of the Pharo image. </p></li>
+<li><p>Blazing fast. Memory mapping is a function that comes directly from the OS kernel and as such it has to be extremely fast. Memory mapping is also what is used for dynamically linked shared libraries an extremely important feature for any application including Pharo that heavily depends on (see Cairo for Athens). So its a very mature , well tested method. </p></li>
+<li><p>No extra libraries needed to be installed, CPPBridge uses OS libraries to work out of the box</p></li>
+<li><p>Low level handling of memory. Direct access to memory you can even manipulate the memory byte by byte</p></li>
+<li><p>Memory efficient. Memory mapping excels at large data, the bigger the better. Can take full advantage of your entire free memory and not waste a byte.  That means also that can be used to optimise Pharo memory, since you could compress your Pharo objects to bytes and mapped file will store the live state.</p></li>
+<li><p>Tons of Languages. Because memory mapping is a core functionality for every OS out there, pretty much every programming language supports it. CPPBridge currently supports only C/C++ but all languages can be supported giving access to Pharo to any library for any programming language. Sky is the limit</p></li>
+<li><p>Self Documented. CPPBridge is small, simple and with large class comment and comments for every method. YouTube video tutorial also available and linked on top. </p></li>
+<li><p>Works both ways, C/C++ and Pharo can access and modify the shared memory. Making it possible for C/C++ to use Pharo libraries and Pharo to use C/C++ libraries.</p></li>
+<li><p>Experiments have proven that it improves sex life...  if it does not please file a bug report ;)</p></li>
+</ul>
+
+<hr>
+
+<h1>
+<a id="what-are-the-disadvantages-" class="anchor" href="#what-are-the-disadvantages-" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>What are the disadvantages ?</h1>
+
+<ul>
+<li><p>Candy Crash Saga. Dare do something incorrectly and Pharo will crash. CPPBridge can easily point to wrong address if you are not aware of what you doing. </p></li>
+<li><p>C++/C . If you think you can avoid learning C/C++ and that this is a magic solution , think again. The C/C++ application must be modified to include shared memory mapping for CPPBridge to work .</p></li>
+<li><p>Local only. Unlike sockets, Shared Memory works only on the same machine so no remote execution and manipulation of code like in my socket bridge to Python</p></li>
+<li><p>UFFI still No1 option. No replacement for UFFI it actually depends on it to work , so if you can turn your C/C++ code into a DLL that should be your first option.</p></li>
+</ul>
+
+<hr>
+
+<h1>
+<a id="roadmap" class="anchor" href="#roadmap" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Roadmap</h1>
+
+<p>Currently CPPBridge works only on MacOS , most likely on Linux too (because it uses the Unix architecture) but I will have to test it.</p>
+
+<p>Windows is coming next ASAP, since its my No1 platform for creating commercial games.</p>
+
+<p>Maybe establish a small protocol of communication via the Shared Memory , JSON looks like a good universal format </p>
+
+<hr>
+
+<h1>
+<a id="thanks" class="anchor" href="#thanks" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Thanks</h1>
+
+<p>Big thanks to Eliot for inspiring me and Esteban for helping me figure out things.</p>
+      </section>
+    </div>
+    <footer>
+      <p>Project maintained by <a href="https://github.com/kilon">kilon</a></p>
+      <p>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></p>
+    </footer>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+    
+  </body>
+</html>
