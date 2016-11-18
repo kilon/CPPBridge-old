@@ -7,15 +7,19 @@
 #include <sys/mman.h>
 #include <string>
 #include <iostream>
+#include <typeinfo>
 
-#define FILEPATH "./mmapped.bin"
+#define FILEPATH "/Users/kilon/cpptest.bin"
 #define NUMINTS  (1000)
 #define FILESIZE (NUMINTS * sizeof(int))
 
-typedef struct {
-  char data[100];
-  uint16_t count;
-} state_data;
+typedef struct
+    {
+        float x; // no need to take the entire space of the shared memory
+        float y;
+        float z;
+    } state_data;
+
 
 int main(int argc, char *argv[])
 {
@@ -41,18 +45,14 @@ if (data == MAP_FAILED) {
 
     //std::cout<<"map_pointer : "<<std::to_string(map_pointer)<<"\n";
 
-     std::cout<<"Struct data : "<<data->data<<"\n";
-     std::cout<<"Struct count : "<<data->count<<"\n";
-     std::cout<<"Struct type  : "<<typeid(data).name()<<"\n";
-     typeof(132) x =132;
-     typeof(x)* px;
-     px=&x;
-     typeof(x) y=140;
-     int x_adress = &px;
-     std::cout<<"\nx  : "<< *(&x)<<"\n";
-     std::cout<<"y   : "<< *(&y)<<"\n";
-     std::cout<<"type of x: "<<typeid(x).name()<<"\n";
-     std::cout<<"type of adress of x : "<<typeid(x_adress).name()<<"\n";
+     std::cout<<"Struct x : "<<data->x<<"\n";
+     std::cout<<"Struct y : "<<data->y<<"\n";
+     std::cout<<"Struct z : "<<data->z<<"\n";
+     std::cout<<"type of  z : "<<typeid(data->z).name()<<"\n";
+
+     std::cout<<"size of Struct : "<<sizeof(*data)<<"\n";
+     std::cout<<"size of float : "<<sizeof(float)<<"\n";
+
 
 
     std::cout<<"O_RDWR : "<< std::to_string(O_RDWR) << "\n";
