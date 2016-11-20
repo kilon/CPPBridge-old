@@ -1,7 +1,7 @@
 {
 	"commentStamp" : "",
 	"super" : "BaselineOf",
-	"category" : "CPPBridge",
+	"category" : "BaselineOfCPPBridge",
 	"classinstvars" : [ ],
 	"pools" : [ ],
 	"classvars" : [ ],
